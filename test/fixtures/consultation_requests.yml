@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  patient: one
+  text: MyText
+  created_at: 2023-10-30 23:45:38
+
+two:
+  patient: two
+  text: MyText
+  created_at: 2023-10-30 23:45:38
