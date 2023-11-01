@@ -7,5 +7,6 @@ Rails.application.routes.draw do
       resources :recommendations, only: [:index, :create]
     end
     resources :recommendations, only: :index
+    get "/external_api/:endpoint/:data", to: "external_api#index"
   end
 end
