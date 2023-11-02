@@ -15,9 +15,13 @@ module Api
     end
 
     def create
-      recommendation = RequestRecommendation.new(recommendation_params)
+      params = recommendation_params
+      recommendation = RequestRecommendation.new(params)
       if recommendation.save
         render json: {status: "SUCCESS", message: "Recommendation for consultation request created"}, status: :created
+        patient_id = ConsultationRequest.find(params[:consultation_request_id]).patient_id
+        patient_email = Patient.find(patient_id).email
+        UserMailer.new_recommendation(patient_email, params[:text]).deliver_now
       else
         render json: {status: "FAILURE", message: "Request could not be saved"}, status: :bad_request
       end
@@ -25,12 +29,6 @@ module Api
 
     def recommendation_params
       params.permit(:consultation_request_id, :text)
-    end
-
-    def send_email(email, subject, text)
-      message = <<MESSAGE_END
-      From: TestAPI <>
-MESSAGE_END
     end
   end
 end

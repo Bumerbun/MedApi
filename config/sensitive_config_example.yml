@@ -3,13 +3,28 @@ development:
     name: "dev_db_name"
     username: "dev_db_username"
     password: "dev_db_password"
+  smtp:
+    address: "smtp.address.com"
+    port: "25"
+    user_name: "smtp username"
+    password: "smtp password"
 test:
   database:
     name: "test_db_name"
     username: "test_db_username"
     password: "test_db_password"
+  smtp:
+    address: "smtp.address.com"
+    port: "25"
+    user_name: "smtp username"
+    password: "smtp password"
 production:
   database:
     name: "prod_db_name"
     username: "prod_db_username"
     password: "prod_db_password"
+  smtp:
+    address: "smtp.address.com"
+    port: "25"
+    user_name: "smtp username"
+    password: "smtp password"
