@@ -5,18 +5,18 @@ default: &default
 
 development:
   <<: *default
-  database: <%= SENSITIVE.database[:name]%>
-  username: <%= SENSITIVE.database[:username]%>
-  password: <%= SENSITIVE.database[:password]%>
+  database: <%= ENV["DATABASE_NAME"] %>
+  username: <%= ENV["DATABASE_USERNAME"]%>
+  password: <%= ENV["DATABASE_PASSWORD"]%>
 
 test:
   <<: *default
-  database: <%= SENSITIVE.database[:name]%>
-  username: <%= SENSITIVE.database[:username]%>
-  password: <%= SENSITIVE.database[:password]%>
+  database: <%= ENV["DATABASE_NAME"] %>
+  username: <%= ENV["DATABASE_USERNAME"]%>
+  password: <%= ENV["DATABASE_PASSWORD"]%>
 
 production:
   <<: *default
-  database: <%= SENSITIVE.database[:name]%>
-  username: <%= SENSITIVE.database[:username]%>
-  password: <%= SENSITIVE.database[:password]%>
+  database: <%= ENV["DATABASE_NAME"] %>
+  username: <%= ENV["DATABASE_USERNAME"]%>
+  password: <%= ENV["DATABASE_PASSWORD"]%>

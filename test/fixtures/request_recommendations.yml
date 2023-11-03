@@ -2,8 +2,4 @@
 
 one:
   consultation_request: one
-  text: MyText
-
-two:
-  consultation_request: two
-  text: MyText
+  text: "it was tested!!!"

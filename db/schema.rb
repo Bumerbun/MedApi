@@ -25,7 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_30_234603) do
     t.string "name", limit: 100, null: false
     t.string "surname", limit: 100, null: false
     t.string "patronymic", limit: 100, null: false
-    t.string "phone", limit: 11, null: false
+    t.string "phone", limit: 12, null: false
     t.string "email", null: false
   end
 

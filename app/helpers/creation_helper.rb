@@ -7,7 +7,7 @@ class CreationHelper
       caller.render json: {
         status: "FAILURE",
         message: "Request could not be saved",
-        error_text: validation_result.errors.first&.text
+        error_text: validation_result.errors.map{|error| {"text": error.text, "path": error.path}}
       }, status: :bad_request
       return
     end

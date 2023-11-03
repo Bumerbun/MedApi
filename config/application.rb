@@ -8,6 +8,21 @@ Bundler.require(*Rails.groups)
 
 module MedodsApi
   class Application < Rails::Application
+
+    SENSITIVE = Rails.application.config_for :sensitive_config
+    # Setting up secret data
+    ENV["DATABASE_NAME"] = SENSITIVE.database[:name]
+    ENV["DATABASE_USERNAME"] = SENSITIVE.database[:username]
+    ENV["DATABASE_PASSWORD"] = SENSITIVE.database[:password]
+
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: SENSITIVE.smtp[:address],
+      port: SENSITIVE.smtp[:port],
+      user_name: SENSITIVE.smtp[:user_name],
+      password: SENSITIVE.smtp[:password]
+    }
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
