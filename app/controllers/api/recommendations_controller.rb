@@ -2,7 +2,7 @@
 
 module Api
   class RecommendationsController < ApplicationController
-    @@validator = RecommendationContract.new
+    VALIDATOR = RecommendationContract.new
     def index
       recommendations = RequestRecommendation
       if params[:consultation_request_id]
@@ -15,8 +15,11 @@ module Api
       render json: {status: "SUCCESS", data: recommendations}, status: :ok
     end
     def create
-      CreationHelper.create(self, recommendation_params.to_h, RequestRecommendation, @@validator)
-      send_email
+      final_json = CreationHelper.create(recommendation_params.to_h, RequestRecommendation, VALIDATOR)
+      data = final_json[:data].as_json
+      data["email_status"] = send_email.as_json[:errors] ? "FAILURE" : "SUCCESS"
+
+      render json: data, status: final_json[:status]
     end
 
     def recommendation_params

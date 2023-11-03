@@ -1,12 +1,13 @@
 module Api
   class ConsultationRequestsController < ApplicationController
-    @@validator = ConsultationRequestContract.new
+    VALIDATOR = ConsultationRequestContract.new
     def index
       requests = ConsultationRequest.all
       render json: {status: "SUCCESS", data: requests }, status: :ok
     end
     def create
-      CreationHelper.create(self, request_params.to_h, ConsultationRequest, @@validator)
+      final_json = CreationHelper.create(request_params.to_h, ConsultationRequest, VALIDATOR)
+      render json: final_json[:data], status: final_json[:status]
     end
 
     def request_params

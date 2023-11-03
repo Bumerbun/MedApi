@@ -66,4 +66,28 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :bad_request
   end
+
+  test "empty attributes" do
+    new_patient_data = {
+      name: "",
+      surname: "",
+      patronymic: "",
+      phone: "",
+      email: ""}
+    post "/api/patients", params: new_patient_data
+
+    assert_response :bad_request
+  end
+
+  test "invalid name data" do
+    new_patient_data = {
+      name: "",
+      surname: "",
+      patronymic: "",
+      phone: "+79009009090",
+      email: "test@example.com"}
+    post "/api/patients", params: new_patient_data
+
+    assert_response :bad_request
+  end
 end

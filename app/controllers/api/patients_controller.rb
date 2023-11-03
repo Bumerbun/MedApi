@@ -1,13 +1,14 @@
 module Api
   class PatientsController < ApplicationController
-    @@validator = PatientContract.new
+    VALIDATOR = PatientContract.new
     def index
       patients = Patient.all
       render json: { status: "SUCCESS", data: patients }, status: :ok
     end
 
     def create
-      CreationHelper.create(self, patient_params.to_h, Patient, @@validator)
+      final_json = CreationHelper.create(patient_params.to_h, Patient, VALIDATOR)
+      render json: final_json[:data], status: final_json[:status]
     end
 
     def patient_params

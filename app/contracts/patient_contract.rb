@@ -8,9 +8,9 @@ end
 
 class PatientContract < Dry::Validation::Contract
   params do
-    required(:name).filled(:string, max_size?:100)
-    required(:surname).filled(:string, max_size?:100)
-    required(:patronymic).filled(:string, max_size?:100)
+    required(:name).filled(:string, max_size?:100, min_size?:2)
+    required(:surname).filled(:string, max_size?:100, min_size?:2)
+    required(:patronymic).filled(:string, max_size?:100, min_size?:2)
     required(:phone).filled(:string, size?:12)
     required(:email).filled(Types::Email)
   end

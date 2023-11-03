@@ -1,9 +1,9 @@
 require 'net/http'
 module Api
   class ExternalApiController < ApplicationController
-    @@api_link = "https://api.fda.gov"
+    API_LINK = "https://api.fda.gov"
     def index
-      uri = URI("#{@@api_link}/#{params[:endpoint]}/#{params[:data]}.json")
+      uri = URI("#{API_LINK}/#{params[:endpoint]}/#{params[:data]}.json")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
 

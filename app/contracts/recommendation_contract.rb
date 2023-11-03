@@ -6,6 +6,6 @@ class RecommendationContract < Dry::Validation::Contract
   end
 
   rule(:consultation_request_id) do
-    key.failure("Consultation request with this id doesnt exist") unless ConsultationRequest.find(value)
+    key.failure("Consultation request with this id doesnt exist") unless ConsultationRequest.exists?(value)
   end
 end
