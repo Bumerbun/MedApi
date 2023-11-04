@@ -1,12 +1,12 @@
 class PatientsControllerTest < ActionDispatch::IntegrationTest
   test "patient creation" do
     new_patient_data = patients(:one).as_json
-    new_patient_data[:phone] = "+70000000000"
-    new_patient_data[:email] = "test@example.com"
+    new_patient_data["phone"] = "+70000000000"
+    new_patient_data["email"] = "test@example.com"
 
     post "/api/patients", params: new_patient_data
 
-    assert_response :success
+    assert_response :success, {new: new_patient_data, existing: patients(:one).as_json}
     assert_equal 201, @response.status
 
     new_patient_data.delete("id")
@@ -16,11 +16,11 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
 
   test "duplicate email" do
     new_patient_data = patients(:one).as_json
-    new_patient_data[:email] = "example@example.com"
+    new_patient_data["email"] = "example@example.com"
 
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict, {"new": new_patient_data, "existing": patients(:one).as_json}
   end
 
   test "invalid email" do
@@ -29,7 +29,7 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
 
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 
   test "duplicate phone" do
@@ -38,7 +38,7 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
 
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 
   test "invalid phone (too long)" do
@@ -46,7 +46,7 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
     new_patient_data[:phone] = "+7000000000099"
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 
   test "invalid phone (invalid prefix)" do
@@ -55,7 +55,7 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
 
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
   test "missing attributes" do
     new_patient_data = {
@@ -64,7 +64,7 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
 
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 
   test "empty attributes" do
@@ -76,7 +76,7 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
       email: ""}
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 
   test "invalid name data" do
@@ -88,6 +88,6 @@ class PatientsControllerTest < ActionDispatch::IntegrationTest
       email: "test@example.com"}
     post "/api/patients", params: new_patient_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 end

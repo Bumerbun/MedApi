@@ -16,10 +16,12 @@ module Api
     end
     def create
       final_json = CreationHelper.create(recommendation_params.to_h, RequestRecommendation, VALIDATOR)
-      data = final_json[:data].as_json
-      data["email_status"] = send_email.as_json[:errors] ? "FAILURE" : "SUCCESS"
-
-      render json: data, status: final_json[:status]
+      unless final_json.result[:data][:status] == ResponseStatus.instance.validation_failure_literal
+        final_json.add_extra( "email_status",
+          send_email.as_json[:errors] ? ResponseStatus.instance.failure_literal : ResponseStatus.instance.success_literal)
+      end
+      final_json = final_json.result
+      render json: final_json[:data], status: final_json[:status]
     end
 
     def recommendation_params

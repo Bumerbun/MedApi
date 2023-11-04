@@ -8,7 +8,6 @@ Bundler.require(*Rails.groups)
 
 module MedodsApi
   class Application < Rails::Application
-
     SENSITIVE = Rails.application.config_for :sensitive_config
     # Setting up secret data
     ENV["DATABASE_NAME"] = SENSITIVE.database[:name]

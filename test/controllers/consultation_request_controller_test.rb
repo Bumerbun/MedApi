@@ -14,13 +14,13 @@ class ConsultationRequestControllerTest < ActionDispatch::IntegrationTest
     request_data = {patient_id: -1, text: "i request rubies"}
     post "/api/consultation_requests", params: request_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 
   test "no data" do
     request_data = {}
     post "/api/consultation_requests", params: request_data
 
-    assert_response :bad_request
+    assert_response :conflict
   end
 end

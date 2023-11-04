@@ -7,7 +7,7 @@ module Api
     end
 
     def create
-      final_json = CreationHelper.create(patient_params.to_h, Patient, VALIDATOR)
+      final_json = CreationHelper.create(patient_params.to_h, Patient, VALIDATOR).result
       render json: final_json[:data], status: final_json[:status]
     end
 
