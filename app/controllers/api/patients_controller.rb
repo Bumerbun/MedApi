@@ -3,7 +3,11 @@ module Api
     VALIDATOR = PatientContract.new
     def index
       patients = Patient.all
-      render json: { status: "SUCCESS", data: patients }, status: :ok
+      final_json = ResponseFormHelper.new
+                                     .set_status(:success)
+                                     .add_extra("found_data", patients)
+                                     .result
+      render json: final_json[:data], status: final_json[:status]
     end
 
     def create

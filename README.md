@@ -1,24 +1,70 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Установка и запуск сервера:
 
-Things you may want to cover:
+1. Если программа git не установлена - установить [по ссылке](https://git-scm.com/downloads)
 
-* Ruby version
+2. Установить интерпретатор Ruby версии 3.2.2, если не установлен - [Ссылка](https://www.ruby-lang.org/en/downloads/)
 
-* System dependencies
+3. Выбрать директорию и произвести косольную комманду 
+```
+git clone https://github.com/Bumerbun/TestTaskMedods
+```
 
-* Configuration
+4. Перейти в скачанную директорию проекта 
+```
+cd TestTaskMedods
+```
 
-* Database creation
+5. Проверить установлен ли пакет bundle с помощью команды "bundler --version", если не установлен выполнить "gem install bundler"
+```
+bundler --version
+gem install bundler
+```
 
-* Database initialization
+6. Установить зависимости проекта выполнив команду 
+```
+bundle install
+```
 
-* How to run the test suite
+7. В директории проекта "/config" находится файл "sensitive_config_example.yml" - это файл конфигурации базы данных и smtp сервера (сервер для отправки Email сообщений)
+Файл "sensitive_config_example.yml" переименовать в "sensitive_config.yml", затем заполнить данные базы данных (указать имя базы данных, имя пользователя и пароль) и smtp сервера (адресс, порт, имя пользователя, пароль)
+Если база данных не локальная - дополнить конфигурацию "database.yml" параметрами host
 
-* Services (job queues, cache servers, search engines, etc.)
+8. Выполнить консольные команды "rake db:setup" и "rake db:migrate", это создаст указанную в конфигурациях базу данных и заполнит её моделями
+```
+rake db:setup
+rake db:migrate
+```
 
-* Deployment instructions
+9. Для запуска сервера выполнить консольную команду "rails server", для запуска юнит тестов - выполнить "rails test"
+```
+rails server
+rails test
+```
 
-* ...
+
+# Чек-лист выполнения
+1. Backend
+	1.1 RESTful API разработана на Ruby on Rails (для главной апи используется саб-адрес api, таким образом эндпоинты апи на локальном сервере будут располагаться на http://localhost:3000/api)
+	1.2 Реализованы модели со всеми параметрами и прописанными связями между моделями
+	1.3 Реализованнные endpoint'ы:
+		- POST /consultation_requests - создание нового запроса на консультацию
+		- GET /consultation_requests - получение всех запросов на консультации
+		- POST /consultaion_requests/:request_id/recommendations - создание рекоммендации на конкретный запрос на консультацию
+		- GET /consultaion_requests/:request_id/recommendations - получение всех рекоммендаций на конкретный запрос на консультацию
+		- GET /recommendations - получение всех рекоммендаций
+		- GET /patients/:patient_id/recommendations - получение всех рекоммендаций на конкретного пациента
+		- GET /patients - получение всех пациентов
+		- POST /patients - создание нового пациента (для тестирований и для нужд разработки)
+	1.4 Интегрированна внешняя апи OpenFDA, с которой возможно выполнение всевозможных роутов:
+		- GET /external_api/:endpoint/:data которой следует добавлять валидные параметры запроса (рабочий запрос - "http://localhost:3000/api/external_api/drug/event.json?search=receivedate:[20040101+TO+20081231]&limit=2")
+	1.5 Реализован механизм отправки email сообщений через smtp сервер. Email отправляется как только создаётся новая рекоммендация и содержит текст этой рекоммендации
+2. Database
+	2.1 Используется PostgresSQL
+	2.2 Структура и связи с базой данной создаются автоматически через миграции (предварительно были сгенерированы и дополнены)
+3. Дополнительно
+	3.1 Для вализаций пост запросов к каждой модели существуют соответствующий файл контракта из библиотеки dry-rb dry-validation а также новые типы с использованием dry-types, ошибки запросов отправляются в нормальном виде вместе с дополнительной информацией по некорректному запросу
+	3.2 Все Post запросы покрыты различными тестами
+	3.3 Докер не подключен и не реализован
+	3.4 Также реализована система для предоставления информации о возвращённой информации запросов в едином формате
